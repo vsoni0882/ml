@@ -1,0 +1,38 @@
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+ 
+# Load dataset
+df = pd.read_csv("mushroom.csv")
+df = df.apply(LabelEncoder().fit_transform)
+ 
+x = df.drop("poisonous", axis=1)
+y = df["poisonous"]
+ 
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+ 
+# Naive Bayes
+m = GaussianNB()
+m.fit(x_train, y_train)
+y_pred_nb = m.predict(x_test)
+print("Naive Bayes Accuracy:", accuracy_score(y_test, y_pred_nb))
+ 
+# Decision Tree
+d = DecisionTreeClassifier(random_state=42)
+d.fit(x_train, y_train)
+y_pred_dt = d.predict(x_test)
+print("Decision Tree Accuracy:", accuracy_score(y_test, y_pred_dt))
+ 
+# Simple confusion matrix
+cm = confusion_matrix(y_test, y_pred_dt)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title("Decision Tree Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()

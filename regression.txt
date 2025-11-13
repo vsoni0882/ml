@@ -7,40 +7,25 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-# -----------------------------
-# 1. Load Dataset
-# -----------------------------
-# Example CSV: Month,Temperature
+
 df = pd.read_csv("india_temperature.csv")
 
-# Convert month names to numbers if needed
+
 # df['Month'] = df['Month'].map({'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,
 #                                'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12})
 
 X = df[['Month']]           # Feature
 y = df['Temperature']       # Target
 
-# -----------------------------
-# 2. Split Data
-# -----------------------------
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# -----------------------------
-# 3. Train Linear Regression Model
-# -----------------------------
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# -----------------------------
-# 4. Make Predictions
-# -----------------------------
 y_pred = model.predict(X_test)
 
-# -----------------------------
-# 5. Performance Metrics
-# -----------------------------
 mse = mean_squared_error(y_test, y_pred)
 mae = mean_absolute_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
@@ -49,9 +34,6 @@ print("Mean Squared Error (MSE):", mse)
 print("Mean Absolute Error (MAE):", mae)
 print("R-Square:", r2)
 
-# -----------------------------
-# 6. Visualization
-# -----------------------------
 plt.scatter(X, y)                    # Actual points
 plt.plot(X, model.predict(X), linewidth=2)     # Regression line
 plt.xlabel("Month")

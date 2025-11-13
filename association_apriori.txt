@@ -1,0 +1,12 @@
+import pandas as pd
+from mlxtend.frequent_patterns import apriori, association_rules
+ 
+df = pd.read_csv("Market_Basket.csv")
+ 
+basket = df.stack().str.get_dummies().groupby(level=0).sum()
+basket = basket.applymap(lambda x: 1 if x >= 1 else 0)
+ 
+freq = apriori(basket, min_support=0.01, use_colnames=True)
+rules = association_rules(freq, metric="confidence", min_threshold=0.2)
+ 
+print(rules)
